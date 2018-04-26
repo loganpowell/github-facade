@@ -18,7 +18,7 @@ async function run() {
 		extend type Location {
 			weather: Weather
 		}
-		
+
     extend type Event {
         location: Location
 		}
@@ -71,8 +71,8 @@ async function run() {
 		})
 	);
 
-	app.listen(3000);
-	console.log('Server running. Open http://localhost:3000/graphiql to run queries.');
+	app.listen(process.env.PORT || 3000);
+	console.log(`Server running. Open /graphiql to run queries.`);
 }
 
 try {
