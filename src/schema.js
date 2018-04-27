@@ -29,5 +29,12 @@ module.exports = {
 			schema: serviceSchemaDefinition,
 			link
 		});
-	}
+	},
+
+  context: (headers, secrets) => {
+    return {
+      headers,
+      secrets,
+    };
+  },
 };

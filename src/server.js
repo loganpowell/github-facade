@@ -6,6 +6,7 @@ const express = require('express'),
     	{ graphqlExpress, graphiqlExpress } = require('apollo-server-express'),
     	{ mergeSchemas } = require('graphql-tools'),
     	{ getIntrospectSchema } = require('./schema');
+      cors = require('cors')
 
 //our graphql endpoints
 const endpoints = [
@@ -24,9 +25,11 @@ const endpoints = [
 	try {
 		//promise.all to grab all remote schemas at the same time, we do not care what order they come back but rather just when they finish
 		allSchemas = await Promise.all(endpoints.map(ep => getIntrospectSchema(ep)));
-		//create function for /graphql endpoint and merge all the schemas
+
+    // app.use(cors()) // <- with some help: https://blog.graph.cool/enabling-cors-for-express-graphql-apollo-server-1ef999bfb38d
 		app.use(
       '/graphql',
+      cors(),
       bodyParser.json(),
       graphqlExpress({
         schema: mergeSchemas({
@@ -34,7 +37,9 @@ const endpoints = [
         }),
         // tracing: true,
         // cacheControl: true,
-      }));
+      }),
+    )
+
     //setup graphiql (logan)
     const gql = String.raw;
 
